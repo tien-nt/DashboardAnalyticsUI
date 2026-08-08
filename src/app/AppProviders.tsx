@@ -1,7 +1,5 @@
 
-import { CssBaseline, ThemeProvider } from "@mui/material";
-
-import { theme } from "../theme";
+import { AppThemeProvider } from "../theme/ThemeProvider";
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -11,10 +9,8 @@ export default function AppProviders({
   children,
 }: AppProvidersProps) {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-
+      <AppThemeProvider>
       {children}
-    </ThemeProvider>
+    </AppThemeProvider>
   );
 }

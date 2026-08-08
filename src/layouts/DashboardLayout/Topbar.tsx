@@ -1,21 +1,22 @@
 import {
   AppBar,
-  Avatar,
   Box,
   IconButton,
-  Menu,
-  MenuItem,
   Toolbar,
-  Tooltip,
   Typography,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
-import { useState } from "react";
+import { useLocation } from "react-router-dom";
+
+import UserMenu from "./UserMenu";
+import LanguageMenu from "./LanguageMenu";
+import SettingsMenu from "./SettingsMenu";
+
+import { getPageTitle } from "../../utils/navigation.utils";
+import { useAppTheme } from "../../theme/ThemeProvider";
 
 interface TopbarProps {
   onMenuClick: () => void;
@@ -24,58 +25,46 @@ interface TopbarProps {
 export default function Topbar({
   onMenuClick,
 }: TopbarProps) {
-  const [anchorEl, setAnchorEl] =
-    useState<null | HTMLElement>(null);
+  const location = useLocation();
 
-  const handleUserMenuOpen = (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const pageTitle = getPageTitle(
+    location.pathname
+  );
 
-  const handleUserMenuClose = () => {
-    setAnchorEl(null);
-  };
+  const {
+    mode,
+    toggleMode,
+  } = useAppTheme();
 
   return (
     <AppBar
       position="fixed"
-      color="inherit"
       elevation={0}
       sx={{
-        ml: {
-          md: "260px",
-        },
-        zIndex: (theme) => theme.zIndex.drawer + 1,
-        width: {
-          xs: "100%",
-          md: "calc(100% - 260px)",
-        },
+        zIndex: (theme) =>
+          theme.zIndex.drawer + 1,
+
+        backgroundColor:
+          "background.paper",
+
         color: "text.primary",
+
         borderBottom: "1px solid",
         borderColor: "divider",
-        backgroundColor: "background.paper",
       }}
     >
       <Toolbar
         sx={{
-          minHeight: "72px !important",
-          justifyContent: "space-between",
-           px: {
+          minHeight:
+            "72px !important",
+
+          px: {
             xs: 2,
             md: 3,
           },
         }}
       >
-        {/* Left */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-           {/* Mobile menu button */}
+        {/* Mobile menu */}
 
         <IconButton
           edge="start"
@@ -91,85 +80,51 @@ export default function Topbar({
         >
           <MenuIcon />
         </IconButton>
-        
-          <Typography
-            variant="h6"
-            sx={{fontWeight:600}}
-          >
-            Dashboard
-          </Typography>
-        </Box>
 
-        {/* Right */}
+        {/* Page title */}
+
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+            flexGrow: 1,
+          }}
+        >
+          {pageTitle}
+        </Typography>
+
+        {/* Actions */}
+
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: 0.5,
+            gap: {
+              xs: 0,
+              sm: 0.5,
+            },
           }}
         >
-          <Tooltip title="Language">
-            <IconButton>
-              <LanguageOutlinedIcon />
-            </IconButton>
-          </Tooltip>
+          {/* Language */}
 
-          <Tooltip title="Notifications">
-            <IconButton>
-              <NotificationsNoneOutlinedIcon />
-            </IconButton>
-          </Tooltip>
+          <LanguageMenu />
 
-          <Tooltip title="Settings">
-            <IconButton>
-              <SettingsOutlinedIcon />
-            </IconButton>
-          </Tooltip>
+          {/* Settings */}
 
-          <IconButton
-            onClick={handleUserMenuOpen}
-            sx={{ ml: 1 }}
-          >
-            <Avatar
-              sx={{
-                width: 36,
-                height: 36,
-                fontSize: 14,
-              }}
-            >
-              JS
-            </Avatar>
+          <SettingsMenu
+            mode={mode}
+            onToggleMode={toggleMode}
+          />
+
+          {/* Notifications */}
+
+          <IconButton>
+            <NotificationsNoneIcon />
           </IconButton>
 
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleUserMenuClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-          >
-            <MenuItem onClick={handleUserMenuClose}>
-              Profile
-            </MenuItem>
+          {/* User */}
 
-            <MenuItem onClick={handleUserMenuClose}>
-              My Account
-            </MenuItem>
-
-            <MenuItem onClick={handleUserMenuClose}>
-              Settings
-            </MenuItem>
-
-            <MenuItem onClick={handleUserMenuClose}>
-              Logout
-            </MenuItem>
-          </Menu>
+          <UserMenu />
         </Box>
       </Toolbar>
     </AppBar>
