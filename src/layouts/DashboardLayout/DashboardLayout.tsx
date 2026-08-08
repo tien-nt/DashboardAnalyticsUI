@@ -6,29 +6,31 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import Breadcrumb from "./Breadcrumb";
-const drawerWidth = 260;
+export const drawerWidth = 260;
 
 export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] =
     useState(false);
 
-  const handleMobileMenuOpen = () => {
-    setMobileOpen(true);
+  const handleDrawerToggle = () => {
+    setMobileOpen((previous) => !previous);
   };
 
-  const handleMobileMenuClose = () => {
+  const handleDrawerClose = () => {
     setMobileOpen(false);
   };
 
   return (
     <Box sx={{ display: "flex" }}>
-      <Sidebar
+          <Sidebar
         mobileOpen={mobileOpen}
-        onMobileClose={handleMobileMenuClose}
+        onMobileClose={handleDrawerClose}
       />
 
+      {/* Topbar */}
+
       <Topbar
-        onMenuClick={handleMobileMenuOpen}
+        onMenuClick={handleDrawerToggle}
       />
 
       <Box

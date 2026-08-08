@@ -46,12 +46,12 @@ export default function Topbar({
         ml: {
           md: "260px",
         },
-
+        zIndex: (theme) => theme.zIndex.drawer + 1,
         width: {
           xs: "100%",
           md: "calc(100% - 260px)",
         },
-
+        color: "text.primary",
         borderBottom: "1px solid",
         borderColor: "divider",
         backgroundColor: "background.paper",
@@ -61,6 +61,10 @@ export default function Topbar({
         sx={{
           minHeight: "72px !important",
           justifyContent: "space-between",
+           px: {
+            xs: 2,
+            md: 3,
+          },
         }}
       >
         {/* Left */}
@@ -71,21 +75,26 @@ export default function Topbar({
             gap: 1,
           }}
         >
-          <IconButton
-            onClick={onMenuClick}
-            sx={{
-              display: {
-                xs: "inline-flex",
-                md: "none",
-              },
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
+           {/* Mobile menu button */}
 
+        <IconButton
+          edge="start"
+          onClick={onMenuClick}
+          sx={{
+            display: {
+              xs: "inline-flex",
+              md: "none",
+            },
+
+            mr: 1,
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
+        
           <Typography
             variant="h6"
-            fontWeight={600}
+            sx={{fontWeight:600}}
           >
             Dashboard
           </Typography>

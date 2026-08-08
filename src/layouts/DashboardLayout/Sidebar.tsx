@@ -14,7 +14,7 @@ import { NavLink } from "react-router-dom";
 
 import { menuConfig } from "../../config/menu.config";
 
-const drawerWidth = 260;
+import { drawerWidth } from "./DashboardLayout";
 
 interface SidebarProps {
   mobileOpen: boolean;
@@ -29,26 +29,31 @@ export default function Sidebar({
     <Box>
       {/* Logo */}
       <Toolbar
-  sx={{
-    minHeight: "72px !important",
-    px: 3,
-  }}
->
-  <Typography
-    variant="h6"
-    sx={{
-      fontWeight: 700,
-      color: "primary.main",
-    }}
-  >
-    Admin Dashboard
-  </Typography>
-</Toolbar>
+        sx={{
+          minHeight: "72px !important",
+          px: 3,
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 700,
+            color: "primary.main",
+          }}
+        >
+          Admin Dashboard
+        </Typography>
+      </Toolbar>
 
       <Divider />
 
-      {/* Navigation */}
-      <List sx={{ px: 1.5, py: 2 }}>
+      {/* Menu */}
+      <List
+        sx={{
+          px: 1.5,
+          py: 2,
+        }}
+      >
         {menuConfig.map((item) => {
           const Icon = item.icon;
 
@@ -59,9 +64,9 @@ export default function Sidebar({
               to={item.path}
               onClick={onMobileClose}
               sx={{
-                borderRadius: 2,
-                mb: 0.5,
                 minHeight: 44,
+                mb: 0.5,
+                borderRadius: 2,
 
                 color: "text.secondary",
 
@@ -70,12 +75,16 @@ export default function Sidebar({
                   color: "primary.contrastText",
 
                   "& .MuiListItemIcon-root": {
-                    color: "primary.contrastText",
+                    color: "inherit",
                   },
                 },
 
                 "&:hover": {
                   backgroundColor: "action.hover",
+                },
+
+                "&.active:hover": {
+                  backgroundColor: "primary.dark",
                 },
               }}
             >
@@ -108,9 +117,13 @@ export default function Sidebar({
 
   return (
     <>
+      {/* ========================================= */}
       {/* Desktop Sidebar */}
+      {/* ========================================= */}
+
       <Drawer
         variant="permanent"
+        open
         sx={{
           display: {
             xs: "none",
@@ -119,19 +132,24 @@ export default function Sidebar({
 
           width: drawerWidth,
 
+          flexShrink: 0,
+
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
+
             borderRight: "1px solid",
             borderColor: "divider",
           },
         }}
-        open
       >
         {drawerContent}
       </Drawer>
 
+      {/* ========================================= */}
       {/* Mobile Sidebar */}
+      {/* ========================================= */}
+
       <Drawer
         variant="temporary"
         open={mobileOpen}
